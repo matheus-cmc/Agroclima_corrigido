@@ -1,10 +1,15 @@
-# 📊 Documentação do Projeto AgroClima Inteligente
+# 🌱 AgroClima Inteligente
 
-## 📋 Descrição do Projeto
+![Status](https://img.shields.io/badge/status-concluído-success)
+![Node.js](https://img.shields.io/badge/Node.js-v22.17.1-green)
+![Express](https://img.shields.io/badge/Express-v5.2.1-blue)
+![Jest](https://img.shields.io/badge/Jest-v30.3.0-red)
 
-O **AgroClima Inteligente** é um sistema de recomendação de irrigação que utiliza dados de temperatura em tempo real para sugerir a necessidade de irrigação. O projeto foi desenvolvido como parte de uma atividade de testes automatizados.
+## 📋 Sobre o Projeto
 
-### Objetivos da Atividade
+O **AgroClima Inteligente** é um sistema de recomendação de irrigação que utiliza dados de temperatura em tempo real para sugerir a necessidade de irrigação. O projeto foi desenvolvido como parte de uma atividade de testes automatizados, demonstrando a importância dos testes no desenvolvimento de software.
+
+### 🎯 Objetivos da Atividade
 
 1. Criar testes automatizados (unitários e de integração)
 2. Usar os testes para identificar falhas no sistema
@@ -13,24 +18,27 @@ O **AgroClima Inteligente** é um sistema de recomendação de irrigação que u
 ---
 
 ## 🏗️ Estrutura do Projeto
+
+```
 agroclima2/
 ├── backend/
-│ ├── server.js
-│ ├── utils/
-│ │ └── irrigationRule.js
-│ └── services/
-│ └── weatherService.js
+│   ├── server.js
+│   ├── utils/
+│   │   └── irrigationRule.js
+│   └── services/
+│       └── weatherService.js
+├── frontend/
+│   ├── index.html
+│   ├── style.css
+│   └── script.js
 ├── tests/
-│ ├── irrigationRule.test.js
-│ ├── weatherService.test.js
-│ └── integration.test.js
+│   ├── irrigationRule.test.js
+│   ├── weatherService.test.js
+│   └── integration.test.js
 ├── package.json
 ├── jest.config.js
 └── DOCUMENTACAO.md
-
-
----
-
+```
 
 ---
 
@@ -44,6 +52,46 @@ agroclima2/
 | Jest | 30.3.0 | Framework de testes |
 | Supertest | 7.2.2 | Testes de requisições HTTP |
 | CORS | 2.8.5 | Compartilhamento de recursos entre origens |
+
+---
+
+## 🚀 Como Executar o Projeto
+
+### Pré-requisitos
+- Node.js instalado (v22 ou superior)
+
+### Passos para execução
+
+**1. Instalar as dependências**
+```bash
+npm install
+```
+
+**2. Iniciar o servidor**
+```bash
+cd backend
+node server.js
+```
+
+**3. Acessar a aplicação**
+```
+http://localhost:3000
+```
+
+**4. Executar os testes**
+```bash
+npx jest
+```
+
+---
+
+## 🧪 Testes Manuais Recomendados
+
+| Cenário | Latitude | Longitude | Recomendação Esperada |
+|---------|----------|-----------|---------------------|
+| 🔥 Irrigação URGENTE | `33.4484` | `-112.0740` | Irrigação URGENTE |
+| 🌤️ Irrigação moderada | `-23.5505` | `-46.6333` | Irrigação moderada |
+| ❄️ Não irrigar | `-54.8019` | `-68.3030` | Não irrigar |
 
 ---
 
@@ -65,56 +113,9 @@ PS C:\Users\aluno.fsa\Documents\agroclima2> npx jest
     × GET /irrigation deve retornar status 200 e estrutura correta (37 ms)
     × GET /irrigation deve retornar os dados corretos (7 ms)
 
-  ● Testes de integração - Endpoint /irrigation › GET /irrigation deve retornar status 200 e estrutura correta
-
-    expect(received).toBeDefined()
-
-    Received: undefined
-
-      15 |
-      16 |         expect(res.statusCode).toBe(200);
-    > 17 |         expect(res.body.temperature).toBeDefined();
-         |                                      ^
-      18 |         expect(res.body.advice).toBeDefined();
-      19 |     });
-      20 |     
-
-      at Object.toBeDefined (tests/integration.test.js:17:38)
-
-  ● Testes de integração - Endpoint /irrigation › GET /irrigation deve retornar os dados corretos
-
-    expect(received).toBe(expected) // Object.is equality
-
-    Expected: 32
-    Received: undefined
-
-      23 |             .get("/irrigation?lat=-12&lon=-38");
-      24 |
-    > 25 |         expect(res.body.temperature).toBe(32);
-         |                                      ^
-      26 |         expect(res.body.advice).toBe("Irrigação moderada");
-      27 |     });
-      28 | });
-
-      at Object.toBe (tests/integration.test.js:25:38)
-
  FAIL  tests/weatherService.test.js
   Testes do serviço de clima
     × Deve retornar a temperatura corretamente após parse do JSON (4 ms)
-
-  ● Testes do serviço de clima › Deve retornar a temperatura corretamente após parse do JSON
-
-    TypeError: Cannot read properties of undefined (reading 'temperature')
-
-       8 |
-       9 |     return {
-    > 10 |         temperature: response.data.current.temperature
-         |                                            ^
-      11 |     };
-      12 | };
-
-      at temperature (backend/services/weatherService.js:10:44)
-      at Object.<anonymous> (tests/weatherService.test.js:21:24)
 
  FAIL  tests/irrigationRule.test.js
   Testes de regra de irrigação
@@ -122,142 +123,68 @@ PS C:\Users\aluno.fsa\Documents\agroclima2> npx jest
     × Temperatura 25°C deve retornar Irrigação moderada (2 ms)
     × Temperatura 10°C deve retornar Não irrigar (1 ms)
 
-  ● Testes de regra de irrigação › Temperatura 35°C deve retornar Irrigação URGENTE
-
-    expect(received).toBe(expected) // Object.is equality
-
-    Expected: "Irrigação URGENTE"
-    Received: "Irrigação moderada"
-
-      3 | describe("Testes de regra de irrigação", () => {
-      4 |     test("Temperatura 35°C deve retornar Irrigação URGENTE", () => {
-    > 5 |         expect(getIrrigationAdvice(35)).toBe("Irrigação URGENTE");
-        |                                         ^
-      6 |     });
-      7 |
-      8 |     test("Temperatura 25°C deve retornar Irrigação moderada", () => {
-
-      at Object.toBe (tests/irrigationRule.test.js:5:41)
-
-  ● Testes de regra de irrigação › Temperatura 25°C deve retornar Irrigação moderada
-
-    expect(received).toBe(expected) // Object.is equality
-
-    Expected: "Irrigação moderada"
-    Received: "Não irrigar"
-
-       7 |
-       8 |     test("Temperatura 25°C deve retornar Irrigação moderada", () => {
-    >  9 |         expect(getIrrigationAdvice(25)).toBe("Irrigação moderada");
-         |                                         ^
-      10 |     });
-      11 |
-      12 |     test("Temperatura 10°C deve retornar Não irrigar", () => {
-
-      at Object.toBe (tests/irrigationRule.test.js:9:41)
-
-  ● Testes de regra de irrigação › Temperatura 10°C deve retornar Não irrigar
-
-    expect(received).toBe(expected) // Object.is equality
-
-    Expected: "Não irrigar"
-    Received: "Irrigação URGENTE"
-
-      11 |
-      12 |     test("Temperatura 10°C deve retornar Não irrigar", () => {
-    > 13 |         expect(getIrrigationAdvice(10)).toBe("Não irrigar");
-         |                                         ^
-      14 |     });
-      15 | });
-
-      at Object.toBe (tests/irrigationRule.test.js:13:41)
-
 Test Suites: 3 failed, 3 total
 Tests:       6 failed, 6 total
-Snapshots:   0 total
-Time:        0.614 s, estimated 1 s
-Ran all test suites.
-
-📌 Análise Detalhada dos Erros
-Erro 1: Lógica de Irrigação Incorreta (irrigationRule.js)
-Problema: As condições estavam invertidas
-
-35°C (muito quente) retornava "Irrigação moderada" ❌
-
-25°C (moderado) retornava "Não irrigar" ❌
-
-10°C (frio) retornava "Irrigação URGENTE" ❌
-
-Causa: Condicionais escritas na ordem errada (if temp < 20, else if temp < 30, else)
-
-Impacto: Sistema recomendava irrigação em temperaturas frias e não irrigava em temperaturas quentes
-
-Erro 2: Campo Incorreto na API (weatherService.js)
-Problema: response.data.current.temperature retornava undefined
-
-Causa: A API Open-Meteo retorna os dados no campo current_weather, não current
-
-Impacto: O serviço não conseguia extrair a temperatura correta da resposta da API
-
-Erro 3: Nome do Campo no JSON (server.js)
-Problema: O endpoint retornava { temp: temperature } mas os testes esperavam temperature
-
-Causa: Inconsistência entre o nome do campo retornado e o esperado pelos testes
-
-Impacto: Os testes de integração recebiam undefined ao tentar acessar res.body.temperature
-
-Erro 4: Ausência de Validação de Parâmetros (server.js)
-Problema: O endpoint aceitava requisições sem latitude e longitude
-
-Causa: Faltava validação dos parâmetros obrigatórios
-
-Impacto: O sistema não retornava erro adequado quando parâmetros estavam ausentes
-
-Erro 5: Servidor Iniciando nos Testes (server.js)
-Problema: O servidor Express iniciava automaticamente ao rodar os testes
-
-Causa: Faltava a condição if (require.main === module) para controle de execução
-
-Impacto: Causava conflitos de porta e logs desnecessários durante os testes
-
-Erro 6: Mock com Temperatura Incompatível (integration.test.js)
-Problema: O mock usava 32°C que gerava "Irrigação URGENTE" mas o teste esperava "Irrigação moderada"
-
-Causa: Inconsistência entre o valor mockado e a expectativa do teste
-
-Impacto: Teste falhava mesmo com a lógica correta
-
-
-✅ Correções Aplicadas e Resultado Final
-
-### Correções Realizadas
-
-**1. irrigationRule.js** - Invertida a lógica das condições:
-- Antes: 35°C → "Irrigação moderada" | Depois: 35°C → "Irrigação URGENTE"
-- Antes: 25°C → "Não irrigar" | Depois: 25°C → "Irrigação moderada"  
-- Antes: 10°C → "Irrigação URGENTE" | Depois: 10°C → "Não irrigar"
-
-**2. weatherService.js** - Corrigido o campo da API:
-- Antes: `response.data.current.temperature`
-- Depois: `response.data.current_weather.temperature`
-
-**3. server.js** - Corrigido o nome da chave no JSON:
-- Antes: `{ temp: temperature, advice: advice }`
-- Depois: `{ temperature: temperature, advice: advice }`
-- Adicionada validação de parâmetros obrigatórios (lat e lon)
-- Adicionada condição `if (require.main === module)` para não iniciar servidor nos testes
-
-**4. integration.test.js** - Ajustado o mock:
-- Antes: `temperature: 32` (gerava "Irrigação URGENTE")
-- Depois: `temperature: 25` (gera "Irrigação moderada")
+Time:        0.614 s
+```
 
 ---
 
--Códigos corrigidos:
+## 📌 Análise Detalhada dos Erros
 
-### Códigos Corrigidos
+### ❌ Erro 1: Lógica de Irrigação Incorreta (`irrigationRule.js`)
 
-**irrigationRule.js**
+| Temperatura | Comportamento Errado | Comportamento Correto |
+|-------------|---------------------|---------------------|
+| 35°C (quente) | "Irrigação moderada" ❌ | "Irrigação URGENTE" ✅ |
+| 25°C (moderado) | "Não irrigar" ❌ | "Irrigação moderada" ✅ |
+| 10°C (frio) | "Irrigação URGENTE" ❌ | "Não irrigar" ✅ |
+
+**Causa:** Condicionais escritas na ordem errada (`if temp < 20`, `else if temp < 30`, `else`)
+
+---
+
+### ❌ Erro 2: Campo Incorreto na API (`weatherService.js`)
+
+- **Problema:** `response.data.current.temperature` retornava `undefined`
+- **Causa:** A API Open-Meteo retorna os dados no campo `current_weather`, não `current`
+- **Impacto:** Serviço não conseguia extrair a temperatura correta
+
+---
+
+### ❌ Erro 3: Nome do Campo no JSON (`server.js`)
+
+- **Problema:** O endpoint retornava `{ temp: temperature }` mas os testes esperavam `temperature`
+- **Impacto:** Testes recebiam `undefined` ao acessar `res.body.temperature`
+
+---
+
+### ❌ Erro 4: Ausência de Validação de Parâmetros (`server.js`)
+
+- **Problema:** Endpoint aceitava requisições sem latitude e longitude
+- **Impacto:** Sistema não retornava erro adequado quando parâmetros estavam ausentes
+
+---
+
+### ❌ Erro 5: Servidor Iniciando nos Testes (`server.js`)
+
+- **Problema:** Servidor Express iniciava automaticamente ao rodar os testes
+- **Causa:** Faltava a condição `if (require.main === module)` para controle de execução
+- **Impacto:** Causava conflitos de porta e logs desnecessários durante os testes
+
+---
+
+### ❌ Erro 6: Mock com Temperatura Incompatível (`integration.test.js`)
+
+- **Problema:** Mock usava 32°C que gerava "Irrigação URGENTE" mas o teste esperava "Irrigação moderada"
+- **Impacto:** Teste falhava mesmo com a lógica correta
+
+---
+
+## ✅ Correções Aplicadas
+
+### 1. `irrigationRule.js` - Lógica corrigida
+
 ```javascript
 function getIrrigationAdvice(temp) {
     if (temp > 30) return "Irrigação URGENTE";
@@ -266,10 +193,11 @@ function getIrrigationAdvice(temp) {
 }
 
 module.exports = getIrrigationAdvice;
+```
 
-weatherService.js
+### 2. `weatherService.js` - Campo da API corrigido
 
-javascript
+```javascript
 const axios = require("axios");
 
 module.exports = async function getWeather(lat, lon) {
@@ -280,50 +208,121 @@ module.exports = async function getWeather(lat, lon) {
         temperature: response.data.current_weather.temperature
     };
 };
-text
+```
 
-### 3. **Adicionar seção de Como Executar**:
+### 3. `server.js` - Correções completas
 
-```markdown
-## 🚀 Como Executar o Projeto
+```javascript
+const express = require("express");
+const cors = require("cors");
+const path = require("path");
+const getWeather = require("./services/weatherService");
+const getIrrigationAdvice = require("./utils/irrigationRule");
 
-### Pré-requisitos
-- Node.js instalado (v22+)
-- NPM ou Yarn
+const app = express();
 
-### Passos
+app.use(cors());
+app.use(express.json());
+app.use(express.static(path.join(__dirname, "../frontend")));
 
-1. **Instalar dependências**
-```bash
-npm install
-Iniciar o servidor
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend/index.html"));
+});
 
-bash
-cd backend
-node server.js
-Acessar a aplicação
+app.get("/irrigation", async (req, res) => {
+    const { lat, lon } = req.query;
+    
+    if (!lat || !lon) {
+        return res.status(400).json({ error: "Latitude e longitude são obrigatórias" });
+    }
+    
+    try {
+        const weatherData = await getWeather(lat, lon);
+        const temperature = weatherData.temperature;
+        const advice = getIrrigationAdvice(temperature);
+        
+        res.json({
+            temperature: temperature,
+            advice: advice
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Erro ao obter dados climáticos" });
+    }
+});
 
-text
-http://localhost:3000
-Executar os testes
+if (require.main === module) {
+    const PORT = 3000;
+    app.listen(PORT, () => {
+        console.log("=".repeat(50));
+        console.log(`🚀 Servidor AgroClima Inteligente rodando!`);
+        console.log(`📱 Acesse: http://localhost:${PORT}`);
+        console.log("=".repeat(50));
+    });
+}
 
-bash
-npx jest
-text
+module.exports = app;
+```
 
-### 4. **Adicionar seção de Testes Manuais**:
+### 4. `integration.test.js` - Mock ajustado
 
-```markdown
-## 🧪 Testes Manuais Recomendados
+```javascript
+const request = require("supertest");
+const app = require("../backend/server");
 
-| Cenário | Latitude | Longitude | Recomendação Esperada |
-|---------|----------|-----------|---------------------|
-| Irrigação URGENTE | `33.4484` | `-112.0740` | Irrigação URGENTE |
-| Irrigação moderada | `-23.5505` | `-46.6333` | Irrigação moderada |
-| Não irrigar | `-54.8019` | `-68.3030` | Não irrigar |
+jest.mock("../backend/services/weatherService", () => {
+    return jest.fn().mockResolvedValue({ 
+        temperature: 25
+    });
+});
 
+describe("Testes de integração - Endpoint /irrigation", () => {
+    test("GET /irrigation deve retornar status 200 e estrutura correta", async () => {
+        const res = await request(app)
+            .get("/irrigation?lat=-12&lon=-38");
+        
+        expect(res.statusCode).toBe(200);
+        expect(res.body.temperature).toBeDefined();
+        expect(res.body.advice).toBeDefined();
+    });
+    
+    test("GET /irrigation deve retornar os dados corretos", async () => {
+        const res = await request(app)
+            .get("/irrigation?lat=-12&lon=-38");
+        
+        expect(res.body.temperature).toBe(25);
+        expect(res.body.advice).toBe("Irrigação moderada");
+    });
+    
+    test("GET /irrigation sem parâmetros deve retornar erro 400", async () => {
+        const res = await request(app)
+            .get("/irrigation");
+        
+        expect(res.statusCode).toBe(400);
+        expect(res.body.error).toBeDefined();
+    });
+});
+```
 
-### Resultado Final dos Testes
+### 5. `script.js` - Frontend corrigido
+
+```javascript
+async function buscar() {
+    const lat = document.getElementById("lat").value;
+    const lon = document.getElementById("lon").value;
+
+    const res = await fetch(`/irrigation?lat=${lat}&lon=${lon}`);
+    
+    const data = await res.json();
+
+    document.getElementById("resultado").innerHTML =
+        `Temperatura: ${data.temperature}°C <br> ${data.advice}`;
+}
+```
+
+---
+
+## 📊 Resultado Final dos Testes
 
 ```bash
 PS C:\Users\aluno.fsa\Documents\agroclima2> npx jest
@@ -348,3 +347,55 @@ Test Suites: 3 passed, 3 total
 Tests:       7 passed, 7 total
 Time:        0.938 s
 Ran all test suites.
+```
+
+---
+
+## 📈 Estatísticas do Projeto
+
+| Métrica | Valor |
+|---------|-------|
+| Testes Unitários | 3 cenários |
+| Testes de Integração | 3 cenários |
+| Testes de Serviço | 1 cenário |
+| Total de Testes | 7 testes |
+| Cobertura | 100% dos cenários críticos |
+| Status | ✅ Todos os testes passando |
+
+---
+
+## 🎯 Conclusão
+
+Os testes automatizados foram fundamentais para identificar e corrigir os problemas no sistema. Através do Jest, foi possível:
+
+1. ✅ Identificar lógica de negócio incorreta (regras de irrigação invertidas)
+2. ✅ Detectar erros de integração com API externa (campo incorreto na resposta)
+3. ✅ Encontrar inconsistências na API (nomes de campos diferentes)
+4. ✅ Validar tratamento de erros (parâmetros obrigatórios)
+5. ✅ Garantir qualidade do código (todos os testes passando)
+
+O projeto agora está **100% funcional** e pode ser executado com:
+
+```bash
+cd backend
+node server.js
+```
+
+Acesse `http://localhost:3000` no navegador para utilizar o sistema.
+
+---
+
+## 📝 Considerações Finais
+
+O **AgroClima Inteligente** demonstra a importância dos testes automatizados no desenvolvimento de software. Através do TDD (Test-Driven Development) ou simplesmente utilizando testes para validar o código, é possível:
+
+- **Reduzir bugs** antes da produção
+- **Aumentar a confiança** no código
+- **Facilitar manutenções** futuras
+- **Documentar o comportamento** esperado do sistema
+- **Prevenir regressões** ao adicionar novas funcionalidades
+
+---
+
+*Documentação gerada em: Março 2026*  
+*Projeto desenvolvido para atividade de testes automatizados* 🌱
