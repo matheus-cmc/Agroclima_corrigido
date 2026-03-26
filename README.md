@@ -178,7 +178,57 @@ Snapshots:   0 total
 Time:        0.614 s, estimated 1 s
 Ran all test suites.
 
-## ✅ Correções Aplicadas e Resultado Final
+📌 Análise Detalhada dos Erros
+Erro 1: Lógica de Irrigação Incorreta (irrigationRule.js)
+Problema: As condições estavam invertidas
+
+35°C (muito quente) retornava "Irrigação moderada" ❌
+
+25°C (moderado) retornava "Não irrigar" ❌
+
+10°C (frio) retornava "Irrigação URGENTE" ❌
+
+Causa: Condicionais escritas na ordem errada (if temp < 20, else if temp < 30, else)
+
+Impacto: Sistema recomendava irrigação em temperaturas frias e não irrigava em temperaturas quentes
+
+Erro 2: Campo Incorreto na API (weatherService.js)
+Problema: response.data.current.temperature retornava undefined
+
+Causa: A API Open-Meteo retorna os dados no campo current_weather, não current
+
+Impacto: O serviço não conseguia extrair a temperatura correta da resposta da API
+
+Erro 3: Nome do Campo no JSON (server.js)
+Problema: O endpoint retornava { temp: temperature } mas os testes esperavam temperature
+
+Causa: Inconsistência entre o nome do campo retornado e o esperado pelos testes
+
+Impacto: Os testes de integração recebiam undefined ao tentar acessar res.body.temperature
+
+Erro 4: Ausência de Validação de Parâmetros (server.js)
+Problema: O endpoint aceitava requisições sem latitude e longitude
+
+Causa: Faltava validação dos parâmetros obrigatórios
+
+Impacto: O sistema não retornava erro adequado quando parâmetros estavam ausentes
+
+Erro 5: Servidor Iniciando nos Testes (server.js)
+Problema: O servidor Express iniciava automaticamente ao rodar os testes
+
+Causa: Faltava a condição if (require.main === module) para controle de execução
+
+Impacto: Causava conflitos de porta e logs desnecessários durante os testes
+
+Erro 6: Mock com Temperatura Incompatível (integration.test.js)
+Problema: O mock usava 32°C que gerava "Irrigação URGENTE" mas o teste esperava "Irrigação moderada"
+
+Causa: Inconsistência entre o valor mockado e a expectativa do teste
+
+Impacto: Teste falhava mesmo com a lógica correta
+
+
+✅ Correções Aplicadas e Resultado Final
 
 ### Correções Realizadas
 
@@ -202,6 +252,76 @@ Ran all test suites.
 - Depois: `temperature: 25` (gera "Irrigação moderada")
 
 ---
+
+-Códigos corrigidos:
+
+### Códigos Corrigidos
+
+**irrigationRule.js**
+```javascript
+function getIrrigationAdvice(temp) {
+    if (temp > 30) return "Irrigação URGENTE";
+    if (temp >= 20) return "Irrigação moderada";
+    return "Não irrigar";
+}
+
+module.exports = getIrrigationAdvice;
+
+weatherService.js
+
+javascript
+const axios = require("axios");
+
+module.exports = async function getWeather(lat, lon) {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+    const response = await axios.get(url);
+  
+    return {
+        temperature: response.data.current_weather.temperature
+    };
+};
+text
+
+### 3. **Adicionar seção de Como Executar**:
+
+```markdown
+## 🚀 Como Executar o Projeto
+
+### Pré-requisitos
+- Node.js instalado (v22+)
+- NPM ou Yarn
+
+### Passos
+
+1. **Instalar dependências**
+```bash
+npm install
+Iniciar o servidor
+
+bash
+cd backend
+node server.js
+Acessar a aplicação
+
+text
+http://localhost:3000
+Executar os testes
+
+bash
+npx jest
+text
+
+### 4. **Adicionar seção de Testes Manuais**:
+
+```markdown
+## 🧪 Testes Manuais Recomendados
+
+| Cenário | Latitude | Longitude | Recomendação Esperada |
+|---------|----------|-----------|---------------------|
+| Irrigação URGENTE | `33.4484` | `-112.0740` | Irrigação URGENTE |
+| Irrigação moderada | `-23.5505` | `-46.6333` | Irrigação moderada |
+| Não irrigar | `-54.8019` | `-68.3030` | Não irrigar |
+
 
 ### Resultado Final dos Testes
 
