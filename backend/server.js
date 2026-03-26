@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path"); // Adicione esta linha
 const getWeather = require("./services/weatherService");
 const getIrrigationAdvice = require("./utils/irrigationRule");
 
@@ -7,6 +8,14 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+// Adicione esta linha para servir arquivos estáticos da pasta frontend
+app.use(express.static(path.join(__dirname, "../frontend")));
+
+// Rota para a página inicial
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend/index.html"));
+});
 
 app.get("/irrigation", async (req, res) => {
     const { lat, lon } = req.query;
@@ -33,7 +42,11 @@ app.get("/irrigation", async (req, res) => {
 if (require.main === module) {
     const PORT = 3000;
     app.listen(PORT, () => {
-        console.log(`Servidor rodando na porta ${PORT}`);
+        console.log("=".repeat(50));
+        console.log(`🚀 Servidor AgroClima Inteligente rodando!`);
+        console.log(`📱 Acesse: http://localhost:${PORT}`);
+        console.log("=".repeat(50));
+        console.log("\n✨ Para testar, abra o navegador e acesse o link acima ✨");
     });
 }
 

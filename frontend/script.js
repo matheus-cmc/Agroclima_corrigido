@@ -4,9 +4,10 @@ async function buscar() {
 
     const res = await fetch(`/irrigation?lat=${lat}&lon=${lon}`);
 
-    
-    const data = res.json();
+    const data = await res.json();
 
     document.getElementById("resultado").innerHTML =
-        ` Temperatura: ${data.temp}°C <br>  ${data.advice}`;
+        `Temperatura: ${data.temperature}°C <br> ${data.advice}`;
 }
+
+//FIM
